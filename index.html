@@ -6,7 +6,7 @@
 <title>newagecrack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@700&family=Fraunces:ital,wght@0,700;1,700&family=Bricolage+Grotesque:wght@700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:      #ece7dd;
@@ -33,10 +33,16 @@
     align-items:center;
   }
 
+  .paper-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+  }
+
   .grain{
     position:fixed; inset:0; pointer-events:none; z-index:99;
     opacity:.05; mix-blend-mode:multiply;
   }
+
+  .wrap{ position:relative; z-index:1; }
 
   .wrap{
     width:100%;
@@ -119,6 +125,16 @@
 </head>
 <body>
 
+<svg class="paper-bg" width="100%" height="100%" preserveAspectRatio="none">
+  <filter id="paper">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="5" seed="7" result="noise"/>
+    <feDiffuseLighting in="noise" lighting-color="#ece7dd" surfaceScale="5" diffuseConstant="1.05">
+      <feDistantLight azimuth="235" elevation="58"/>
+    </feDiffuseLighting>
+  </filter>
+  <rect width="100%" height="100%" fill="white" filter="url(#paper)"/>
+</svg>
+
 <svg class="grain" width="100%" height="100%">
   <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter>
   <rect width="100%" height="100%" filter="url(#noise)"/>
@@ -159,6 +175,25 @@
   <footer>© 2026 NEWAGECRACK</footer>
 
 </div>
+
+<script>
+  var logo = document.querySelector('h1');
+  var fonts = [
+    "'Archivo', sans-serif",
+    "'Space Grotesk', sans-serif",
+    "'Fraunces', serif",
+    "'Bricolage Grotesque', sans-serif",
+    "'JetBrains Mono', monospace"
+  ];
+  var i = 0;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduceMotion){
+    setInterval(function(){
+      i = (i + 1) % fonts.length;
+      logo.style.fontFamily = fonts[i];
+    }, 650);
+  }
+</script>
 
 </body>
 </html>
